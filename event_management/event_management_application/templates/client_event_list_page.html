@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eventique - Events</title>
+
+  CSS CHANGE IN CLIENT_EVENT_LIST_PAGE 
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #000;
+      text-align: center¯
+    }
+
+    /* === NEW CREATIVE HEADER === */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 60px;
+  background: linear-gradient(90deg, #ff00cc, #3333ff);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+nav {
+  margin-left: auto; 
+  margin-right: 20px;
+}
+.logo {
+  font-size: 32px;
+  font-family: 'Brush Script MT', cursive;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 2px;
+}
+
+.logo span {
+  color: yellow;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+nav ul li a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: yellow;
+  transition: width 0.3s ease;
+}
+
+nav ul li a:hover::after,
+nav ul li a.active::after {
+  width: 100%;
+}
+
+.profile {
+  font-size: 20px;
+  background: white;
+  color: #3333ff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+}
+
+.profile:hover {
+  transform: scale(1.1);
+}
+
+
+    /* Title */
+    h1 {
+      font-size: 40px;
+      margin: 40px 0 20px;
+      font-family: Georgia, serif;
+      text-align: center;
+    }
+
+    /* Event grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 40px;
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    /* Event card */
+    .card {
+      background: #f8f8f8;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      overflow: hidden;
+      text-align: center;
+      text-decoration: none;   /* remove underline */
+      color: inherit;          /* keep text color */
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: block;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    .card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+    }
+
+    .card h3 {
+      margin: 12px 0;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .btn {
+      background: #a000a0;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #d63384;
+    }
+
+    .next-btn {
+      align-self: flex-end;
+    }
+
+    
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  
+  <!-- Header -->
+  <header>
+    <div class="logo">Event<span>ique</span></div>
+    <nav>
+      <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="testimonials.html">Testimonials</a></li>
+        <li><a href="contacts.html">Contacts</a></li>
+      </ul>
+    </nav>
+    <div class="profile">👤</div>
+  </header>
+
+  <style>
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 60px;
+      background: linear-gradient(90deg, #ff00cc, #3333ff);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-family: 'Brush Script MT', cursive;
+      font-weight: bold;
+      color: white;
+      letter-spacing: 2px;
+    }
+
+    .logo span {
+      color: yellow;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: yellow;
+      transition: width 0.3s ease;
+    }
+
+    nav ul li a:hover::after,
+    nav ul li a.active::after {
+      width: 100%;
+    }
+
+    .profile {
+      font-size: 20px;
+      background: white;
+      color: #3333ff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .profile:hover {
+      transform: scale(1.1);
+    }
+  </style>
+
+
+  <!-- Title -->
+  <h1>Event Categories</h1>
+
+  <!-- Event Grid -->
+<section class="grid">
+  {% if events %}
+    {% for event in events %}
+      <a href="{% url 'client_event_detail' event.event_id %}" class="card">
+        <img src="{{ event.photo_url }}" alt="{{ event.event_name }}">
+        <h3>{{ event.event_name }}</h3>
+        <p>{{ event.event_description }}</p>
+      </a>
+    {% endfor %}
+  {% else %}
+    <p>No events available</p>
+  {% endif %}
+</section>
+
+
+  <!-- Back button -->
+  <div class="back-button" style="text-align: left; margin-bottom: 30px; margin-left: 40px;">
+    <button class="btn" onclick="window.location.href='{% url 'client_dashboard' %}'">← Back</button>
+  </div>
+</body>
+</html>

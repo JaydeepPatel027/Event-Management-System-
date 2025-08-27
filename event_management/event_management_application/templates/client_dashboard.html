@@ -1,0 +1,288 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eventique</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* === CREATIVE HEADER === */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 60px;
+      background: linear-gradient(90deg, #ff00cc, #3333ff);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-family: 'Brush Script MT', cursive;
+      font-weight: bold;
+      color: white;
+      letter-spacing: 2px;
+    }
+
+    .logo span {
+      color: yellow;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: yellow;
+      transition: width 0.3s ease;
+    }
+
+    nav ul li a:hover::after,
+    nav ul li a.active::after {
+      width: 100%;
+    }
+
+    .profile {
+      font-size: 20px;
+      background: white;
+      color: #3333ff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .profile:hover {
+      transform: scale(1.1);
+    }
+
+    /* === HERO SECTION === */
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 50px;
+    }
+
+    /* === SLIDESHOW (LEFT SIDE) === */
+    .slideshow-container {
+      width: 50%;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .slides {
+      display: none;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .slides img {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .photo-desc {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .fade { animation: fadeEffect 2s; }
+    @keyframes fadeEffect { from {opacity: .4} to {opacity: 1} }
+
+    /* === HERO TEXT (RIGHT SIDE) === */
+    .hero-text { width: 40%; }
+    .hero-text h2 {
+      font-size: 42px;
+      margin-bottom: 20px;
+      animation: glow 2s infinite alternate;
+    }
+
+    .hero-text a {
+      display: inline-block;
+      background-color: #007bff;
+      color: #fff;
+      padding: 12px 25px;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 4px;
+      transition: 0.3s;
+    }
+
+    .hero-text a:hover {
+      background-color: #0056b3;
+      transform: scale(1.1);
+    }
+
+    /* === MODAL POPUP === */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background: #fff;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 900px;
+      animation: zoom 0.4s;
+    }
+
+    @keyframes zoom { from {transform: scale(0.7);} to {transform: scale(1);} }
+
+    .close {
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+    }
+
+    #expandedImg {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    .event-details { margin-top: 10px; }
+    .event-details h3 { margin: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">Event<span>ique</span></div>
+    <nav>
+      <ul>
+        <li><a href="{% url 'client_dashboard' %}">Home</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Testimonials</a></li>
+        <li><a href="#">Contacts</a></li>
+      </ul>
+    </nav>
+    <div class="profile">👤</div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <!-- Slideshow -->
+    <div class="slideshow-container">
+      <div class="slides fade" onclick="showDetails('{% static 'dashboard_images/party1.jpg' %}','Wedding Celebration','A grand wedding organized with beachside decor and live music.')">
+        <img src="{% static 'dashboard_images/party1.jpg' %}" alt="Wedding">
+        <div class="photo-desc">Wedding Management</div>
+      </div>
+      <div class="slides fade" onclick="showDetails('{% static 'dashboard_images/party2.jpg' %}','Corporate Party','Annual corporate party with 500+ employees, gala dinner and live band.')">
+        <img src="{% static 'dashboard_images/party2.jpg' %}" alt="Corporate">
+        <div class="photo-desc">Corporate Events</div>
+      </div>
+      <div class="slides fade" onclick="showDetails('{% static 'dashboard_images/party3.jpg' %}','Birthday Bash','Fun-filled birthday celebration with themed decoration and games.')">
+        <img src="{% static 'dashboard_images/party3.jpg' %}" alt="Birthday">
+        <div class="photo-desc">Birthday Parties</div>
+      </div>
+      <div class="slides fade" onclick="showDetails('{% static 'dashboard_images/party4.jpg' %}','Music Concert','Live concert featuring top artists and performances.')">
+        <img src="{% static 'dashboard_images/party4.jpg' %}" alt="Concert">
+        <div class="photo-desc">Concerts & Shows</div>
+      </div>
+      <div class="slides fade" onclick="showDetails('{% static 'dashboard_images/party5.jpg' %}','Private Gathering','Intimate gathering with personalized decor and arrangements.')">
+        <img src="{% static 'dashboard_images/party5.jpg' %}" alt="Private">
+        <div class="photo-desc">Private Gatherings</div>
+      </div>
+    </div>
+
+    <!-- Hero Text -->
+    <div class="hero-text">
+      <h2>CELEBRATE WITH <br> Eventique</h2>
+      <a href="{% url 'client_event_list_page' %}">Get Started</a>
+    </div>
+  </section>
+
+  <!-- MODAL -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <img id="expandedImg" src="" alt="">
+      <div class="event-details">
+        <h3 id="eventTitle"></h3>
+        <p id="eventDesc"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Slideshow
+    let slideIndex = 0;
+    showSlides();
+    function showSlides() {
+      let slides = document.getElementsByClassName("slides");
+      for (let i = 0; i < slides.length; i++) { slides[i].style.display = "none"; }
+      slideIndex++;
+      if (slideIndex > slides.length) {slideIndex = 1}
+      slides[slideIndex-1].style.display = "block";
+      setTimeout(showSlides, 3000);
+    }
+
+    // Modal
+    function closeModal() { document.getElementById("myModal").style.display = "none"; }
+
+    // Show details in modal
+    function showDetails(imgSrc, title, desc) {
+      document.getElementById("expandedImg").src = imgSrc;
+      document.getElementById("eventTitle").innerText = title;
+      document.getElementById("eventDesc").innerText = desc;
+      document.getElementById("myModal").style.display = "block";
+    }
+  </script>
+</body>
+</html>

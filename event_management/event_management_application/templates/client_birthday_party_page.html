@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Party - Eventique</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #000;
+    }
+
+   /* === NEW CREATIVE HEADER === */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 60px;
+  background: linear-gradient(90deg, #ff00cc, #3333ff);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 32px;
+  font-family: 'Brush Script MT', cursive;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 2px;
+}
+
+.logo span {
+  color: yellow;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+nav ul li a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: yellow;
+  transition: width 0.3s ease;
+}
+
+nav ul li a:hover::after,
+nav ul li a.active::after {
+  width: 100%;
+}
+
+.profile {
+  font-size: 20px;
+  background: white;
+  color: #3333ff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+}
+
+.profile:hover {
+  transform: scale(1.1);
+}
+
+
+    h1 {
+      font-size: 36px;
+      text-align: center;
+      margin: 30px 0 10px;
+      font-family: Georgia, serif;
+    }
+
+    /* Slideshow */
+    .slideshow-container {
+      max-width: 1000px;
+      position: relative;
+      margin: 30px auto;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .slides { display: none; }
+    .slides img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+    }
+    .prev, .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      padding: 12px;
+      margin-top: -22px;
+      color: white;
+      font-weight: bold;
+      font-size: 22px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 50%;
+      user-select: none;
+    }
+    .prev:hover, .next:hover { background: rgba(0,0,0,0.8); }
+    .prev { left: 15px; }
+    .next { right: 15px; }
+    .dots { text-align: center; margin: 10px 0; }
+    .dot {
+      cursor: pointer;
+      height: 12px;
+      width: 12px;
+      margin: 0 4px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .active, .dot:hover { background-color: #717171; }
+
+    /* Main Content */
+    .container {
+      display: flex;
+      justify-content: space-between;
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px;
+    }
+    .left { flex: 2; }
+    .left h2 {
+      font-family: "Brush Script MT", cursive;
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+    .category {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .category-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px;
+    }
+    .popup-btn {
+      padding: 8px 14px;
+      font-size: 16px;
+      border: 1px solid #999;
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+      min-width: 180px;
+      text-align: left;
+    }
+    .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      margin-top: 50px;
+    }
+    .btn {
+      background: #a000a0;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn:hover { background: #d63384; }
+    .next-btn { align-self: flex-end; }
+
+    /* Modals */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background: rgba(0,0,0,0.6);
+    }
+    .modal-content {
+      background: #fff;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 70%;
+      max-width: 800px;
+    }
+    .close {
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    /* Decorations grid styling */
+    .section { margin-bottom: 25px; }
+    .section h3 {
+      margin-bottom: 12px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+    }
+    .option {
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px;
+      transition: 0.3s;
+      background: #fafafa;
+    }
+    .option:hover {
+      background: #f0f0f0;
+      transform: scale(1.05);
+    }
+    .option img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .option span {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .option.selected {
+      border: 2px solid #ff4500;
+      background: #ffe6f0;
+    }
+
+    .done-btn {
+      display: block;
+      margin: 20px auto 10px;
+      padding: 10px 20px;
+      background: #ff4500;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .done-btn:hover {
+      background: #e63900;
+    }
+
+    .back-btn {
+  background: #a000a0;
+  margin-bottom: 40px;
+  margin-left: 50px;
+}
+.back-btn:hover {
+  background: #d63384;
+}
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  
+  <!-- Header -->
+  <header>
+    <div class="logo">Event<span>ique</span></div>
+    <nav>
+      <ul>
+        <li><a href="home_1.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="testimonials.html">Testimonials</a></li>
+        <li><a href="contacts.html">Contacts</a></li>
+      </ul>
+    </nav>
+    <div class="profile">👤</div>
+  </header>
+
+  <style>
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 60px;
+      background: linear-gradient(90deg, #ff00cc, #3333ff);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-family: 'Brush Script MT', cursive;
+      font-weight: bold;
+      color: white;
+      letter-spacing: 2px;
+    }
+
+    .logo span {
+      color: yellow;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: yellow;
+      transition: width 0.3s ease;
+    }
+
+    nav ul li a:hover::after,
+    nav ul li a.active::after {
+      width: 100%;
+    }
+
+    .profile {
+      font-size: 20px;
+      background: white;
+      color: #3333ff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .profile:hover {
+      transform: scale(1.1);
+    }
+  </style>
+
+
+  <!-- Title -->
+  <h1>BIRTHDAY PARTY</h1>
+
+  <!-- Slideshow -->
+  <div class="slideshow-container">
+    <div class="slides"><img src="images/party1.jpg"></div>
+    <div class="slides"><img src="images/party2.jpg"></div>
+    <div class="slides"><img src="images/party3.jpg"></div>
+    <div class="slides"><img src="images/party4.jpg"></div>
+    <div class="slides"><img src="images/party5.jpg"></div>
+    <a class="prev" onclick="plusSlides(-1)">❮</a>
+    <a class="next" onclick="plusSlides(1)">❯</a>
+  </div>
+  <div class="dots">
+    <span class="dot" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+    <span class="dot" onclick="currentSlide(3)"></span>
+    <span class="dot" onclick="currentSlide(4)"></span>
+    <span class="dot" onclick="currentSlide(5)"></span>
+  </div>
+
+  <!-- Content -->
+  <div class="container">
+    <div class="left">
+      <h2>Celebration Kit</h2>
+      <div class="category-row">
+        <div class="category">Cake</div>
+        <button class="popup-btn" onclick="openModal('cake')">Select</button>
+      </div>
+      <div class="category-row">
+        <div class="category">Decoration</div>
+        <button class="popup-btn" onclick="openModal('Decorations')">Select</button>
+      </div>
+      <div class="category-row">
+        <div class="category">Cake & Table Items</div>
+        <button class="popup-btn" onclick="openModal('cake')">Select</button>
+      </div>
+      <!-- ✅ Changed Snacks to Catering -->
+      <div class="category-row">
+        <div class="category">Catering</div>
+        <button class="popup-btn" onclick="openModal('catering')">Select</button>
+      </div>
+    </div>
+    <div class="right">
+  <button class="btn">Select Packages</button>
+  <button class="btn">Date & Location</button>
+  <div style="display: flex; justify-content: space-between;">
+    
+
+    <!-- Next button goes forward -->
+<button class="btn next-btn" onclick="window.location.href='home_3.html'">Next →</button>
+  </div>
+</div>
+
+  </div>
+
+  <!-- Decorations Modal -->
+  <div id="DecorationsModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('Decorations')">&times;</span>
+      <h2 style="text-align:center;">Select Decorations</h2>
+
+      <!-- Balloons -->
+      <div class="section">
+        <h3>Balloons</h3>
+        <div class="options">
+          <div class="option"><img src="images/red-balloon.jpg"><span>Red Balloons</span></div>
+          <div class="option"><img src="images/blue-balloon.jpg"><span>Blue Balloons</span></div>
+          <div class="option"><img src="images/helium-balloon.jpg"><span>Helium Balloons</span></div>
+          <div class="option"><img src="images/metallic-balloon.jpg"><span>Metallic Balloons</span></div>
+        </div>
+      </div>
+
+      <!-- Lights -->
+      <div class="section">
+        <h3>LED Lights</h3>
+        <div class="options">
+          <div class="option"><img src="images/fairy-light.jpg"><span>Fairy Lights</span></div>
+          <div class="option"><img src="images/neon-light.jpg"><span>Neon Lights</span></div>
+          <div class="option"><img src="images/string-light.jpg"><span>String Lights</span></div>
+        </div>
+      </div>
+
+      <!-- Flowers -->
+      <div class="section">
+        <h3>Flowers</h3>
+        <div class="options">
+          <div class="option"><img src="images/roses.jpg"><span>Roses</span></div>
+          <div class="option"><img src="images/marigold.jpg"><span>Marigold</span></div>
+          <div class="option"><img src="images/orchids.jpg"><span>Orchids</span></div>
+        </div>
+      </div>
+
+      <!-- Photo Booth -->
+      <div class="section">
+        <h3>Photo Booth</h3>
+        <div class="options">
+          <div class="option"><img src="images/selfie-booth.jpg"><span>Selfie Booth</span></div>
+          <div class="option"><img src="images/theme-booth.jpg"><span>Theme Booth</span></div>
+        </div>
+      </div>
+
+      <button class="done-btn" onclick="doneSelection('Decorations')">Done</button>
+    </div>
+  </div>
+
+  <!-- Cake Modal -->
+  <div id="cakeModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('cake')">&times;</span>
+      <h3>Select Cake</h3>
+      <div class="option"><img src="images/chocolate_cake.jpg"> Chocolate Cake</div>
+      <div class="option"><img src="images/strawberry_cake.jpg"> Strawberry Cake</div>
+      <div class="option"><img src="images/vanilla_cake.jpg"> Vanilla Cake</div>
+      <div class="option"><img src="images/designer_cake.jpg"> Designer Cake</div>
+      <button class="done-btn" onclick="doneSelection('cake')">Done</button>
+    </div>
+  </div>
+
+  <!-- ✅ Catering Modal -->
+  <div id="cateringModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('catering')">&times;</span>
+      <h3>Select Catering Package</h3>
+      <label><input type="checkbox" class="catering-option" value="Basic Package - ₹5000"> Basic Package - ₹5000</label><br>
+      <label><input type="checkbox" class="catering-option" value="Silver Package - ₹8000"> Silver Package - ₹8000</label><br>
+      <label><input type="checkbox" class="catering-option" value="Gold Package - ₹12000"> Gold Package - ₹12000</label><br>
+      <label><input type="checkbox" class="catering-option" value="Premium Package - ₹20000"> Premium Package - ₹20000</label><br>
+      <button class="done-btn" onclick="doneSelectionCheckbox('catering')">Done</button>
+    </div>
+  </div>
+  <!-- Back button goes to old page -->
+    <button class="btn back-btn" onclick="window.location.href='home_1.html'">← Back</button>
+
+  <!-- Script -->
+  <script>
+  let slideIndex = 1;
+  showSlides(slideIndex);
+
+  function plusSlides(n){ showSlides(slideIndex += n); }
+  function currentSlide(n){ showSlides(slideIndex = n); }
+
+  function showSlides(n){
+    let slides=document.getElementsByClassName("slides");
+    let dots=document.getElementsByClassName("dot");
+    if(n>slides.length){slideIndex=1}
+    if(n<1){slideIndex=slides.length}
+    for(let i=0;i<slides.length;i++){slides[i].style.display="none";}
+    for(let i=0;i<dots.length;i++){dots[i].className=dots[i].className.replace(" active","");}
+    slides[slideIndex-1].style.display="block";
+    dots[slideIndex-1].className+=" active";
+  }
+  setInterval(()=>{plusSlides(1);},4000);
+
+  function openModal(type){ 
+    document.getElementById(type+"Modal").style.display="block"; 
+  }
+  function closeModal(type){ 
+    document.getElementById(type+"Modal").style.display="none"; 
+  }
+
+  window.onclick=function(event){
+    let modals=document.getElementsByClassName("modal");
+    for(let i=0;i<modals.length;i++){
+      if(event.target==modals[i]) modals[i].style.display="none";
+    }
+  }
+
+  // ✅ Multiple Selection Toggle
+  document.querySelectorAll(".option").forEach(opt=>{
+    opt.addEventListener("click",()=>{
+      opt.classList.toggle("selected");
+    });
+  });
+
+  // ✅ Done Selection (Topic Wise)
+  function doneSelection(type){
+    let modal=document.getElementById(type+"Modal");
+    let selected=modal.querySelectorAll(".option.selected span, .option.selected");
+    let selectedTexts=[];
+    selected.forEach(opt=>{
+      selectedTexts.push(opt.innerText.trim());
+    });
+    let btn=document.querySelector(`button[onclick="openModal('${type}')"]`);
+    if(selectedTexts.length>0){
+      btn.innerText= type + ": " + selectedTexts.join(", ");
+    } else {
+      btn.innerText= type + " - Select";
+    }
+    closeModal(type);
+  }
+
+  // ✅ Done Selection for Checkbox type (Catering)
+  function doneSelectionCheckbox(type){
+    let modal=document.getElementById(type+"Modal");
+    let selected=modal.querySelectorAll("input.catering-option:checked");
+    let selectedTexts=[];
+    selected.forEach(opt=>{
+      selectedTexts.push(opt.value);
+    });
+    let btn=document.querySelector(`button[onclick="openModal('${type}')"]`);
+    if(selectedTexts.length>0){
+      btn.innerText= type + ": " + selectedTexts.join(", ");
+    } else {
+      btn.innerText= type + " - Select";
+    }
+    closeModal(type);
+  }
+</script>
+</body>
+</html>

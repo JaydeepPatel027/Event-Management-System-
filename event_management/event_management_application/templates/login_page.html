@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Signup Page</title>
+
+    <!-- Google Fonts for icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0">
+    <link rel="stylesheet" href="{% static 'login_style.css' %}">
+    <style>
+        /* Forgot password modal */
+        .forgot-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+        }
+        .forgot-content {
+            background: #fff;
+            margin: 8% auto;
+            padding: 20px;
+            width: 350px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.3);
+        }
+        .forgot-content h3 {
+            margin-bottom: 15px;
+        }
+        .forgot-content input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        .forgot-content button {
+            margin-top: 10px;
+            background: #007bff;
+            color: #fff;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .forgot-content button:hover {
+            background: #0056b3;
+        }
+        .forgot-close {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+            color: #aaa;
+        }
+        .forgot-close:hover {
+            color: black;
+        }
+        #reset-form { display: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <span class="hamburger-btn material-symbols-rounded">menu</span>
+            <a href="#" class="logo">
+                <img src="{% static 'login_page_images/logo.jpg' %}" alt="Logo" class="logo-img">
+                <h2>MyWebsite</h2>
+            </a>
+            <ul class="links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Portfolio</a></li>
+                <li><a href="#">Courses</a></li>
+                <li><a href="#">About us</a></li>
+                <li><a href="#">Contact us</a></li>
+            </ul>
+            <button class="login-btn">LOG IN</button>
+        </nav>
+    </header>
+
+    <!-- Background overlay -->
+    <div class="blur-bg-overlay"></div>
+
+    <!-- Popup Box -->
+    <div class="form-popup">
+        <span class="close-btn material-symbols-rounded">close</span>
+
+        <!-- Login Form -->
+        <div class="form-box login">
+            <div class="form-details">
+                <h2>Welcome Back</h2>
+                <p>Please log in using your personal information to stay connected.</p>
+            </div>
+            <div class="form-content">
+                <h2>LOGIN</h2>
+                <form action="{% url 'login_page' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-field">
+                        <input type="email" name="email" required>
+                        <label>Email</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" name="password" required>
+                        <label>Password</label>
+                    </div>
+                    <!-- Forgot password link -->
+                    <a href="#" class="forgot-pass-link" onclick="openForgot()">Forgot password?</a>
+                    <button type="submit" name="login">Log In</button>
+                </form>
+                <div class="bottom-link">
+                    Don’t have an account?
+                    <a href="#" id="signup-link">Signup</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup Form -->
+        <div class="form-box signup">
+            <div class="form-details">
+                <h2>Create Account</h2>
+                <p>To join our community, please sign up with your personal details.</p>
+            </div>
+            <div class="form-content">
+                <h2>SIGNUP</h2>
+                <form action="{% url 'login_page' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-field">
+                        <input type="text" name="name" required>
+                        <label>Name</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="email" name="email" required>
+                        <label>Email</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="phone" name="Contact_Number" required>
+                        <label>Contact Number</label>
+                    </div>
+                    
+                    <div class="input-field">
+                        <select name="city" id="city" required>
+                            <option value="" disabled selected>Select City</option>
+                            <option value="Ahmedabad">Ahmedabad</option>
+                            <option value="Surat">Surat</option>
+                            <option value="Vadodara">Vadodara</option>
+                            <option value="Rajkot">Rajkot</option>
+                            <option value="Bhavnagar">Bhavnagar</option>
+                            <option value="Jamnagar">Jamnagar</option>
+                            <option value="Junagadh">Junagadh</option>
+                            <option value="Gandhinagar">Gandhinagar</option>
+                            <option value="Mahesana">Mahesana</option>
+                            <option value="Patan">Patan</option>
+                            <option value="Morbi">Morbi</option>
+                            <option value="Kutch">Kutch</option>
+                        </select>
+                    </div>
+
+                    <div class="input-field">
+                        <input type="password" name="password" required>
+                        <label>Create Password</label>
+                    </div>
+                    <div class="policy-text">
+                        <input type="checkbox" id="policy" required>
+                        <label for="policy">
+                            I agree to the
+                            <a href="#" class="option">Terms & Conditions</a>
+                        </label>
+                    </div>
+                    <button type="submit" name="signup">Sign Up</button>
+                </form>
+                <div class="bottom-link">
+                    Already have an account?
+                    <a href="#" id="login-link">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotModal" class="forgot-modal">
+        <div class="forgot-content">
+            <span class="forgot-close" onclick="closeForgot()">&times;</span>
+            <h3>Reset Password</h3>
+
+            <!-- Step 1: Send OTP -->
+            <div id="otp-section">
+                <input type="email" id="forgot-email" placeholder="Enter your registered Email" required>
+                <button type="button" onclick="sendOtp()">Send OTP</button>
+
+            </div>
+
+            <!-- Step 2: Reset Password (hidden until OTP is sent) -->
+            <form method="POST" action="{% url 'reset_password' %}" id="reset-form">
+                {% csrf_token %}
+                <input type="text" name="otp" placeholder="Enter OTP" required>
+                <input type="password" name="new_password" placeholder="New Password" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                <button type="submit" name="forgot_password">Reset Password</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{% static 'login_page_script.js' %}"></script>
+    <script>
+        function openForgot() {
+            document.getElementById("forgotModal").style.display = "block";
+        }
+        function closeForgot() {
+            document.getElementById("forgotModal").style.display = "none";
+        }
+        window.onclick = function(event) {
+            let modal = document.getElementById("forgotModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Send OTP without form submit
+        function sendOtp() {
+            let email = document.getElementById("forgot-email").value;
+            if (!email) {
+                alert("Please enter your registered email.");
+                return;
+            }
+            // Here we only show reset form after clicking "Send OTP"
+            alert("If this email is registered, an OTP will be sent.");
+            document.getElementById("reset-form").style.display = "block";
+        }
+    </script>
+</body>
+</html>
