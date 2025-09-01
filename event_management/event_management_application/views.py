@@ -6,7 +6,7 @@ import random
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from .models import EventCategory  # 👈 use the correct model name
+from .models import EventCategory, EventService, ServiceOption  # 👈 use the correct model name
 
 
 def login(request):
@@ -153,16 +153,60 @@ def client_dashboard(request):
 def client_event_detail(request, event_id):
     # fetch one event by ID
     event = get_object_or_404(EventCategory, pk=event_id)
-    return render(request, "client_event_detail.html", {"event": event})
+    return render(request, "client_event_detail_page.html", {"event": event})
 
 def client_event_list_page(request):
     events = EventCategory.objects.all()
     return render(request, "client_event_list_page.html", {"events": events})
 
 
-def client_birthday_party_page(request):
-    return render(request, "client_birthday_party_page.html")
+def event_detail(request, event_id):
+    category = get_object_or_404(EventCategory, event_id=event_id)
+    images = category.images.all()
+    options = category.options.all()
 
+    # Group options by type (Cake, Decoration, etc.)
+    option_groups = {}
+    for opt in options:
+        option_groups.setdefault(opt.option_type, []).append(opt)
+
+    return render(request, "event_detail.html", {
+        "category": category,
+        "images": images,
+        "option_groups": option_groups,
+    })
+
+def client_event_detail(request, event_id):
+    # Fetch the selected event
+    event = get_object_or_404(EventCategory, pk=event_id)
+
+    # Fetch all services for the event along with their options
+    services = event.services.prefetch_related('options').all()
+
+    # Prepare structured data for template
+    service_data = []
+    for service in services:
+        service_data.append({
+            "service_id": service.service_id,
+            "service_name": service.service_name,
+            "options": service.options.all(),
+        })
+
+    context = {
+        "event": event,
+        "services": service_data,
+    }
+    return render(request, "client_event_detail_page.html", context)
+
+
+def select_packages(request):
+    return redirect('client_dashboard')
+
+def date_location(request):
+    return redirect('client_dashboard')
+
+def next_step(request):
+    return redirect('client_dashboard')
 
 def logout(request):
     auth_logout(request)
