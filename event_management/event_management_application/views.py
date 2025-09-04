@@ -6,7 +6,8 @@ import random
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from .models import EventCategory, EventService, ServiceOption  # 👈 use the correct model name
+from .models import EventCategory, EventService, ServiceOption 
+from .models import EventGallery # 👈 use the correct model name
 
 
 def login(request):
@@ -161,19 +162,15 @@ def client_event_list_page(request):
 
 
 def event_detail(request, event_id):
-    category = get_object_or_404(EventCategory, event_id=event_id)
-    images = category.images.all()
-    options = category.options.all()
+    # Fetch the event dynamically based on URL
+    event = get_object_or_404(EventCategory, pk=event_id)
 
-    # Group options by type (Cake, Decoration, etc.)
-    option_groups = {}
-    for opt in options:
-        option_groups.setdefault(opt.option_type, []).append(opt)
+    # Fetch all services for this event
+    services = event.services.prefetch_related('options__suboptions').all()
 
-    return render(request, "event_detail.html", {
-        "category": category,
-        "images": images,
-        "option_groups": option_groups,
+    return render(request, 'event_detail.html', {
+        'event': event,
+        'services': services,
     })
 
 def client_event_detail(request, event_id):
@@ -198,6 +195,14 @@ def client_event_detail(request, event_id):
     }
     return render(request, "client_event_detail_page.html", context)
 
+def event_gallery_view(request, event_id):
+    # Filter images by event_id
+    images = EventGallery.objects.filter(event_id=event_id)
+
+    context = {
+        'images': images
+    }
+    return render(request, 'event_gallery.html', context)
 
 def select_packages(request):
     return redirect('client_dashboard')

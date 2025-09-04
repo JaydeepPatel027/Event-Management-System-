@@ -55,7 +55,16 @@ class EventService(models.Model):
         db_table = 'event_services'
         managed = False
 
+class EventGallery(models.Model):
+    gallery_id = models.AutoField(primary_key=True)
+    event_id = models.IntegerField()
+    event_type = models.CharField(max_length=255)
+    image_links = models.TextField()  # assuming it stores URLs
 
+    class Meta:
+        db_table = 'event_gallery'
+        managed = False
+        
 class ServiceOption(models.Model):
     option_id = models.AutoField(primary_key=True)
     service = models.ForeignKey(EventService, on_delete=models.CASCADE, related_name='options')
